@@ -11,3 +11,15 @@ GapGenes.py: Measures the length of an SSR after sequence alignment. Two output 
 SNPMatrix.py: This script will filter the matrix output of GapGenes.py. It filters with the following criteria: 1) A contig can contain no more than 3 SSRs 2) An SSR must have at least 4 reads. 3) SSR two and three may not be less than 25% the most abundant SSR.
 
 FormatMatrix.py: Formats the output of SNPMatrix.py into a format that can be read by JoinMap.
+
+
+An example workflow would include trimming data with trimmomatic and mapping with BWA. After mapping, the SAM files can be processed as follows.
+
+python GapGenes.v3.py -sam <SAM file> -C <SSR info file> -P/S
+python SnipMatrix.py <Output file from GapGenes>
+python Format_Matrix.py
+  
+  For SNPs, a VCF file must be generated. It is recommended to use a tool like BCFTools. Before calling SNPs you can filter the SAM file to only include reads mapped within 50bp of the SSR. An example of this workflow would be.
+  python SamIAm.py <SAM file> -p <yes/no>
+  <Call SNPs with your workflow>
+    python Format_VCF-Matrix.py
